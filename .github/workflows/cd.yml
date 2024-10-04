@@ -19,3 +19,17 @@ jobs:
     - name: buildprod.sh
       run: ./scripts/buildprod.sh
     
+    - name: GCP Authenticaton
+      id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
+    
+    - name: gcloud builds submit
+      run: gcloud builds submit --tag us-central1-docker.pkg.dev/third-arcadia-437603-f5/notely-ar-repo/notely:latest .
